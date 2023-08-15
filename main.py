@@ -26,11 +26,9 @@ def predict_note_authentication(uploaded_file=None):
     return output
 
 
-def download_csv_file():
-    with open('data.csv', 'r') as file:
-        data = file.read()
-    st.download_button(label="Download CSV File",
-                       data=data, file_name='data.csv')
+# def download_csv_file():
+#     with open('data.csv', 'r') as file:
+#         data = file.read()
 
 
 def save_data_to_csv(number, item):
@@ -60,14 +58,14 @@ def main():
             result = predict_note_authentication(uploaded_file)
             with open('data.csv', mode='a', newline='') as file:
                 writer = csv.writer(file)
-
             with st.expander("See Predictions"):
                 for i, item in enumerate(result):
                     st.write(i+1, " {}".format(round(item, 2)))
                     save_data_to_csv(i+1, item)
-                st.success("Succss")
+            st.success("Succss")
             if st.button("Export as CSV"):
-                download_csv_file()
+                st.download_button(label="Download CSV File",
+                                   file_name='data.csv')
         else:
             result = predict_note_authentication(opt1)
 
