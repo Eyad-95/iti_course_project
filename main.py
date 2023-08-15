@@ -27,6 +27,8 @@ def predict_note_authentication(uploaded_file=None):
 
 
 def download_csv_file():
+    with open('data.csv', 'r') as file:
+        data = file.read()
     st.download_button(label="Download CSV File",
                        data=data, file_name='data.csv')
 
