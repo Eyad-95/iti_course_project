@@ -69,9 +69,8 @@ def main():
     if st.button("About"):
         st.text("Lets Learn")
         st.text("Built with Streamlit")
-
-    st.download_button(label="Download CSV File",
-                       file_name='data.csv')
+        st.download_button(label="Download CSV File",
+                           file_name='data.csv')
 
 
 if __name__ == '__main__':
