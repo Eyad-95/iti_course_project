@@ -63,15 +63,15 @@ def main():
                     st.write(i+1, " {}".format(round(item, 2)))
                     save_data_to_csv(i+1, item)
             st.success("Succss")
-            if st.button("Export as CSV"):
-                st.download_button(label="Download CSV File",
-                                   file_name='data.csv')
         else:
             result = predict_note_authentication(opt1)
 
     if st.button("About"):
         st.text("Lets Learn")
         st.text("Built with Streamlit")
+
+    st.download_button(label="Download CSV File",
+                       file_name='data.csv')
 
 
 if __name__ == '__main__':
