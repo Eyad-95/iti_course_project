@@ -26,19 +26,22 @@ def predict_note_authentication(uploaded_file=None):
     return output
 
 
-# def download_csv_file():
-#     with open('data.csv', 'r') as file:
-#         data = file.read()
+def download_csv_file():
+    with open('data.csv', 'r') as file:
+        data = file.read()
+    st.download_button(label="Download CSV File",
+                       data=data, file_name='data.csv')
 
 
-def save_data_to_csv(number, item):
+def save_data_to_csv(item):
     # Open the CSV file in write mode
     with open('data.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([number, item])
+        writer.writerow([item])
 
 
 def main():
+    flag = 0
     st.title("Project Deployment")
     html_temp = """
     <div style="background-color:tomato;padding:10px">
@@ -61,16 +64,23 @@ def main():
             with st.expander("See Predictions"):
                 for i, item in enumerate(result):
                     st.write(i+1, " {}".format(round(item, 2)))
-                    save_data_to_csv(i+1, item)
+                    save_data_to_csv(item)
             st.success("Succss")
+            flag = 1
         else:
             result = predict_note_authentication(opt1)
 
-    if st.button("About"):
-        st.text("Lets Learn")
-        st.text("Built with Streamlit")
+    # if st.button("About"):
+    #     st.text("Lets Learn")
+    #     st.text("Built with Streamlit")
+    # if st.button("Download CSV"):
+    #     download_csv_file()
+
+    if flag == 1:
+        with open('data.csv', 'r') as file:
+            data = file.read()
         st.download_button(label="Download CSV File",
-                           file_name='data.csv')
+                           data=data, file_name='data.csv')
 
 
 if __name__ == '__main__':
