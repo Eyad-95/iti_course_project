@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 import pandas as pd
 import streamlit as st
+import csv
 
 from PIL import Image
 
@@ -25,6 +26,18 @@ def predict_note_authentication(uploaded_file=None):
     return output
 
 
+def download_csv_file():
+    st.download_button(label="Download CSV File",
+                       data=data, file_name='data.csv')
+
+
+def save_data_to_csv(number, item):
+    # Open the CSV file in write mode
+    with open('data.csv', mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([number, item])
+
+
 def main():
     st.title("Project Deployment")
     html_temp = """
@@ -43,12 +56,18 @@ def main():
             st.text("Please choose only one option")
         elif (uploaded_file is not None):
             result = predict_note_authentication(uploaded_file)
+            with open('data.csv', mode='a', newline='') as file:
+                writer = csv.writer(file)
+
+            with st.expander("See Predictions"):
+                for i, item in enumerate(result):
+                    st.write(i+1, " {}".format(round(item, 2)))
+                    save_data_to_csv(i+1, item)
+                st.success("Succss")
+            if st.button("Export as CSV"):
+                download_csv_file()
         else:
             result = predict_note_authentication(opt1)
-    with st.expander("See Predictions"):
-        for i, item in enumerate(result):
-            st.write(i+1, " {}".format(round(item, 2)))
-        st.success('success')
 
     if st.button("About"):
         st.text("Lets Learn")
