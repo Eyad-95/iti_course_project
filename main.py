@@ -3,11 +3,13 @@ import pickle
 import pandas as pd
 import streamlit as st
 import csv
+import matplotlib.pyplot as plt
 
 # importing model from pickle file
 pickle_in = open("classifier.pkl", "rb")
-model = pickle.load(pickle_in)
-
+classifier = pickle.load(pickle_in)
+model = classifier["model"]
+cm = classifier["cm"]
 # predict whether the body mass is hazardous or not
 
 
@@ -44,6 +46,24 @@ def save_data_to_csv(item):
     with open('data.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([item])
+
+
+def create_confusion_matrix(true_labels, predicted_labels):
+    plt.figure(figsize=(6, 6))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+    classes = np.unique(true_labels)
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+    plt.xlabel("Predicted")
+    plt.ylabel("True")
+    for i in range(len(classes)):
+        for j in range(len(classes)):
+            plt.text(j, i, cm[i, j], ha="center", va="center", color="white")
+    plt.tight_layout()
+    return plt
 
 
 def main():
@@ -85,8 +105,11 @@ def main():
             if input_validation(relative_velocity) and input_validation(distance):
                 result = predict_danger_single(
                     [float(relative_velocity), float(distance)])
-                st.write("Result is: {}".format(
-                    "Hazardous" if result[0] == True else "Not Hazardous"))
+                st.write("Result is: &nbsp;&nbsp;&nbsp;**{}**".format(
+                    "<span style='color: red;'>Hazardous</span>" if result[0] == True else "<span style='color: green;'>Not Hazardous</span>"), unsafe_allow_html=True)
+                with st.expander("Show Confusion Matrix"):
+                    st.pyplot(create_confusion_matrix(
+                        "Actual", "Predicted"))
                 st.success("Succss")
             else:
                 st.warning("Values should be numbers")
