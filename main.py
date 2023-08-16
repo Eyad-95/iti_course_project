@@ -21,7 +21,7 @@ def predict_danger_csv(uploaded_file):
     X = df[['relative_velocity', 'miss_distance']]
     X = scaler.transform(X)
     output = model.predict(X)
-    dff = pd.DataFrame({'Prediction': output})
+    dff = pd.DataFrame({'Hazardous': output})
     output_filename = 'model_predictions.csv'
     # index=False to exclude row indices in CSV
     dff.to_csv(output_filename, index=False)
@@ -217,6 +217,11 @@ matplotlib==3.5.1
         st.markdown("---")
     with st.expander("Creators"):
         st.write("Eyad Magdy Gaber Khedr Hussein")
+        st.write("Mahmoud Akram Mahmoud Mohamed")
+        st.write("Toqa Alaa Abdel Rasoul Awad")
+        st.write("Nada Ashraf Moussa Kamel")
+        st.write("Ziad Hesham Al-Safy Rohayiem")
+        st.write("Steven Adel Ata Yakoub")
 
 
 if __name__ == '__main__':
