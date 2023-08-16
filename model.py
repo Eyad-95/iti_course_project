@@ -31,5 +31,5 @@ y_pred = classifier.predict(X_test)
 cm = confusion_matrix(y_test, y_pred)
 
 pickle_out = open("classifier.pkl", "wb")
-pickle.dump({"model": classifier, "cm": cm}, pickle_out)
+pickle.dump({"model": classifier, "cm": cm,"scaler":scaler}, pickle_out)
 pickle_out.close()
