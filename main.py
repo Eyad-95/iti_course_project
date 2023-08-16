@@ -5,23 +5,23 @@ import streamlit as st
 import csv
 
 # importing model from pickle file
-# pickle_in = open("classifier.pkl", "rb")
-# classifier = pickle.load(pickle_in)
+pickle_in = open("classifier.pkl", "rb")
+model = pickle.load(pickle_in)
 
 # predict whether the body mass is hazardous or not
 
 
-# def predict_danger_csv(uploaded_file):
-#     df = pd.read_csv(uploaded_file)
-#     X = df[['relative_velocity', 'miss_distance']]
-#     output = classifier.predict(X)
-#     return output
+def predict_danger_csv(uploaded_file):
+    df = pd.read_csv(uploaded_file)
+    X = df[['relative_velocity', 'miss_distance']]
+    output = model.predict(X)
+    return output
 
 
-# def predict_danger_single(arr):
-#     X = np.array([arr])
-#     output = classifier.predict(X)
-#     return output
+def predict_danger_single(arr):
+    X = np.array([arr])
+    output = model.predict(X)
+    return output
 
 
 def download_csv_file():
@@ -84,7 +84,7 @@ def main():
         else:
             if input_validation(relative_velocity) and input_validation(distance):
                 result = predict_danger_single(
-                    [int(relative_velocity), int(distance)])
+                    [float(relative_velocity), float(distance)])
                 st.write("Result is: {}".format(
                     "Hazardous" if result[0] == True else "Not Hazardous"))
                 st.success("Succss")
